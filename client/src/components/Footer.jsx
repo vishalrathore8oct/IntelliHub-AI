@@ -1,4 +1,3 @@
-import React from "react";
 import { assets } from "../assets/assets";
 
 const Footer = () => {
@@ -55,8 +54,8 @@ const Footer = () => {
         </div>
       </div>
       <p className="pt-4 text-center text-xs md:text-sm pb-5">
-        Copyright {new Date().getFullYear()} © <a href="https://prebuiltui.com">IntelliHub AI</a>. All
-        Right Reserved.
+        Copyright {new Date().getFullYear()} ©{" "}
+        <a href="https://prebuiltui.com">IntelliHub AI</a>. All Right Reserved.
       </p>
     </footer>
   );

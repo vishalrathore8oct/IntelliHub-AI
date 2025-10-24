@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Hash, Image, Sparkles } from "lucide-react";
+import { useState } from "react";
+import { Image, Sparkles } from "lucide-react";
 
 const GenerateImages = () => {
   const ImageStyle = [

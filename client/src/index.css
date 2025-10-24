@@ -14,6 +14,6 @@
   all: revert !important;
 }
 
-.cl-drawerRoot { 
+.cl-drawerRoot {
   z-index: 10;
 }

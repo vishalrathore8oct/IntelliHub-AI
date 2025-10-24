@@ -1,4 +1,3 @@
-import React from "react";
 import { useClerk, useUser, Protect } from "@clerk/clerk-react";
 import {
   House,
@@ -41,11 +40,11 @@ const Sidebar = ({ sidebar, setSidebar }) => {
         />
         <h1 className="mt-1 text-center">{user.fullName}</h1>
         <div className="px-6 mt-5 text-sm text-gray-600 font-medium">
-          {navItems.map(({ to, label, Icon }) => (
+          {navItems.map((item) => (
             <NavLink
-              key={to}
-              to={to}
-              end={to === "/ai"}
+              key={item.to}
+              to={item.to}
+              end={item.to === "/ai"}
               onClick={() => setSidebar(false)}
               className={({ isActive }) =>
                 `px-3.5 py-2.5 flex items-center gap-3 rounded ${
@@ -57,10 +56,10 @@ const Sidebar = ({ sidebar, setSidebar }) => {
             >
               {({ isActive }) => (
                 <>
-                  <Icon
-                    className={`w-4 h-4 ${isActive ? "text-white" : ""}}`}
+                  <item.Icon
+                    className={`w-4 h-4 ${isActive ? "text-white" : ""}`}
                   />
-                  {label}
+                  {item.label}
                 </>
               )}
             </NavLink>

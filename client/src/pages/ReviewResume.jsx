@@ -1,10 +1,11 @@
 import { FileText, Sparkles } from "lucide-react";
-import React, { useState } from "react";
+import { useState } from "react";
 
 const ReviewResume = () => {
   const [input, setInput] = useState("");
   const submitHandler = async (e) => {
     e.preventDefault();
+    console.log("Input", input);
   };
   return (
     <div className="h-full overflow-y-scroll p-6 flex flex-wrap items-start gap-4 text-slate-700">

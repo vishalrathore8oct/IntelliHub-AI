@@ -1,11 +1,12 @@
 import { Scissors, Sparkles } from "lucide-react";
-import React, { useState } from "react";
+import { useState } from "react";
 
 const RemoveObject = () => {
   const [input, setInput] = useState("");
-  const [ object, setObject ] = useState("");
+  const [object, setObject] = useState("");
   const submitHandler = async (e) => {
     e.preventDefault();
+    console.log("Input", input);
   };
   return (
     <div className="h-full overflow-y-scroll p-6 flex flex-wrap items-start gap-4 text-slate-700">
@@ -25,7 +26,9 @@ const RemoveObject = () => {
           accept="image/*"
           required
         />
-        <p className="mt-6 text-sm font-medium">Describe Object Name to Remove</p>
+        <p className="mt-6 text-sm font-medium">
+          Describe Object Name to Remove
+        </p>
         <textarea
           rows={4}
           value={object}
@@ -59,6 +62,6 @@ const RemoveObject = () => {
       </div>
     </div>
   );
-}
+};
 
-export default RemoveObject
+export default RemoveObject;

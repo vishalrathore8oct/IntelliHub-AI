@@ -1,4 +1,3 @@
-import React from "react";
 import { assets, dummyTestimonialData } from "../assets/assets";
 
 const Testimonial = () => {

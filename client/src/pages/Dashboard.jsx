@@ -4,7 +4,6 @@ import { Gem, Sparkle } from "lucide-react";
 import { Protect } from "@clerk/clerk-react";
 import CreationItems from "../components/CreationItems";
 
-
 const Dashboard = () => {
   const [creations, setCreations] = useState([]);
   const getDashboardData = async () => {
@@ -25,7 +24,6 @@ const Dashboard = () => {
           </div>
           <div className="w-10 h-10 rounded-lg bg-linear-to-br from-[#3588F2] to-[#0BB0D7] text-white flex justify-center items-center">
             <Sparkle className="w-5 text-white" />
-          
           </div>
         </div>
         <div className="flex items-center justify-between w-72 p-4 px-6 bg-white rounded-b-xl border border-gray-200">
@@ -39,7 +37,6 @@ const Dashboard = () => {
           </div>
           <div className="w-10 h-10 rounded-lg bg-linear-to-br from-[#FF61C5] to-[#9E53EE] text-white flex justify-center items-center">
             <Gem className="w-5 text-white" />
-          
           </div>
         </div>
       </div>
@@ -50,7 +47,7 @@ const Dashboard = () => {
         ))}
       </div>
     </div>
-  )
+  );
 };
 
 export default Dashboard;
