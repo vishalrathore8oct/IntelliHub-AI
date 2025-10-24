@@ -32,7 +32,7 @@ const RemoveBackground = () => {
           className="w-full flex justify-center items-center gap-2 bg-linear-to-r from-[#F6AB41] to-[#FF4938] text-white px-4 py-2 mt-6 text-sm rounded-lg cursor-pointer"
         >
           {" "}
-          <Eraser className="w-5" /> Generate Title
+          <Eraser className="w-5" /> Remove Background
         </button>
       </form>
       <div className="w-full max-w-lg p-4 bg-white rounded-lg flex flex-col border border-gray-200 min-h-88">
