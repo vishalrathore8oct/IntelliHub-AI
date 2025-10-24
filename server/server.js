@@ -21,6 +21,7 @@ app.use(requireAuth())
 
 app.use("/api/ai", aiRouter)
 
+
 const PORT = process.env.PORT || 8080
 
 app.listen(PORT, () => {
