@@ -10,7 +10,6 @@ const Dashboard = () => {
   const getDashboardData = async () => {
     setCreations(dummyCreationData);
   };
-  console.log(creations);
 
   useEffect(() => {
     getDashboardData();
