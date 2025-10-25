@@ -4,7 +4,7 @@ import { clerkClient } from "@clerk/express";
 import axios from "axios";
 import { v2 as cloudinary } from "cloudinary";
 import fs from "fs";
-import pdf from 'pdf-parse/lib/pdf-parse.js'
+// import pdf from 'pdf-parse/lib/pdf-parse.js'
 
 const openai = new OpenAI({
   apiKey: process.env.GEMINI_API_KEY,
@@ -30,7 +30,7 @@ export const generateArticle = async (req, res) => {
       messages: [
         {
           role: "user",
-          content: `You are an expert content writer for a professional blog. Write a complete, detailed, long-form article based on the following topic. The output must include an engaging introduction, multiple descriptive headings (using '##'), and a concluding summary. Topic: ${prompt}`,
+          content: prompt,
         },
       ],
       temperature: 0.7,
@@ -75,7 +75,7 @@ export const generateBlogTitle = async (req, res) => {
       messages: [
         {
           role: "user",
-          content: `You are an expert SEO copywriter and headline generator. Generate five distinct, highly engaging, and SEO-optimized blog titles based on the following topic. Do not include any introductory text or explanations—just the numbered list. Each title must be 60 characters or less. Topic: ${prompt}`,
+          content: prompt,
         },
       ],
       temperature: 0.7,
@@ -231,13 +231,14 @@ export const resumeReview = async (req, res) => {
 
     const dataBuffer = fs.readFileSync(resume.path);
     const pdfData = await pdf(dataBuffer);
+    const prompt = `Review the following resume and provide constructive feedback on its strengths, weaknesses, and areas for improvement. Resume Content:\n\n${pdfData.text}`;
 
     const response = await openai.chat.completions.create({
       model: "gemini-2.0-flash",
       messages: [
         {
           role: "user",
-          content: `You are an expert **Resume Reviewer and Career Coach**. Critically analyze the following resume and provide a complete, detailed, long-form critique. The output must begin with an engaging summary of the resume's core strengths, followed by a **comprehensive section-by-section analysis** with actionable suggestions for improvement. Use multiple descriptive headings (using '##') for each major section (e.g., 'Summary/Objective', 'Experience', 'Skills', 'Formatting'), and conclude with a prioritized action plan. **Resume Content:** ${pdfData.text}`,
+          content: prompt,
         },
       ],
       temperature: 0.7,
@@ -249,6 +250,7 @@ export const resumeReview = async (req, res) => {
     await sql` INSERT INTO creations (user_id, prompt, content, type) VALUES (${userId}, ${`Review the Uploaded Resume`}, ${content}, ${"resume-review"})`;
 
     res.json({ success: true, content });
+    
   } catch (error) {
     console.log("error", error.massege);
     res.json({ success: false, message: error.message });
