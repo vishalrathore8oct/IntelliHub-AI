@@ -5,6 +5,7 @@ import {
   generateBlogTitle,
   generateImage,
   removeImageBackground,
+  removeImageObject,
 } from "../controllers/ai.controller.js";
 import { upload } from "../configs/multer.js";
 
@@ -18,6 +19,12 @@ Router.post(
   upload.single("image"),
   auth,
   removeImageBackground
+);
+Router.post(
+  "/remove-image-object",
+  upload.single("image"),
+  auth,
+  removeImageObject
 );
 
 export default Router;
