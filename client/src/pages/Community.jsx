@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useUser, useAuth } from "@clerk/clerk-react";
 import { Heart } from "lucide-react";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 
@@ -38,6 +39,47 @@ const Community = () => {
       toast.error(error.message);
     } finally {
       setLoading(false);
+    }
+  };
+
+  // ... inside Community component ...
+
+  const imageLikeToggle = async (id) => {
+    try {
+      const { data } = await axios.post(
+        "/api/user/toggle-like-creation",
+        { id },
+        {
+          headers: {
+            Authorization: `Bearer ${await getToken()}`,
+          },
+        }
+      );
+
+      if (data.success) {
+        toast.success(data.message);
+
+        setCreations((prevCreations) =>
+          prevCreations.map((creation) => {
+            if (creation.id === id) {
+              const currentLikes = creation.likes || [];
+              const userIdStr = user.id;
+              const isLiked = currentLikes.includes(userIdStr);
+
+              const updatedLikes = isLiked
+                ? currentLikes.filter((uid) => uid !== userIdStr)
+                : [...currentLikes, userIdStr];
+
+              return { ...creation, likes: updatedLikes };
+            }
+            return creation;
+          })
+        );
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
     }
   };
 
@@ -83,6 +125,7 @@ const Community = () => {
               <div className="flex gap-1 items-center text-white">
                 <p>{creation.likes.length}</p>
                 <Heart
+                  onClick={() => imageLikeToggle(creation.id)}
                   className={`min-w-5 h-5 hover:scale-110 cursor-pointer ${
                     creation.likes.includes(user?.id)
                       ? "fill-red-500 text-red-600"
