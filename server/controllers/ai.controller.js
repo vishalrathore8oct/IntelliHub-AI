@@ -3,6 +3,8 @@ import sql from "../configs/db.js";
 import { clerkClient } from "@clerk/express";
 import axios from "axios";
 import { v2 as cloudinary } from "cloudinary";
+import fs from "fs";
+import pdf from 'pdf-parse/lib/pdf-parse.js'
 
 const openai = new OpenAI({
   apiKey: process.env.GEMINI_API_KEY,
@@ -146,7 +148,7 @@ export const generateImage = async (req, res) => {
 export const removeImageBackground = async (req, res) => {
   try {
     const { userId } = req.auth();
-    const { path } = req.file;
+    const image = req.file;
     const plan = req.plan;
 
     if (plan !== "premium") {
@@ -157,7 +159,7 @@ export const removeImageBackground = async (req, res) => {
       });
     }
 
-    const { secure_url } = await cloudinary.uploader.upload(path, {
+    const { secure_url } = await cloudinary.uploader.upload(image.path, {
       transformation: [
         {
           effect: "background_removal",
@@ -178,7 +180,7 @@ export const removeImageBackground = async (req, res) => {
 export const removeImageObject = async (req, res) => {
   try {
     const { userId } = req.auth();
-    const { path } = req.file;
+    const image = req.file;
     const { object } = req.body;
     const plan = req.plan;
 
@@ -190,7 +192,7 @@ export const removeImageObject = async (req, res) => {
       });
     }
 
-    const { public_id } = await cloudinary.uploader.upload(path);
+    const { public_id } = await cloudinary.uploader.upload(image.path);
 
     const imageUrl = cloudinary.url(public_id, {
       transformation: [{ effect: `gen_remove:${object}` }],
@@ -200,6 +202,53 @@ export const removeImageObject = async (req, res) => {
     await sql` INSERT INTO creations (user_id, prompt, content, type) VALUES (${userId}, ${`Remove ${object} from Image`}, ${imageUrl}, ${"image"})`;
 
     res.json({ success: true, content: imageUrl });
+  } catch (error) {
+    console.log("error", error.massege);
+    res.json({ success: false, message: error.message });
+  }
+};
+
+export const resumeReview = async (req, res) => {
+  try {
+    const { userId } = req.auth();
+    const resume = req.file;
+    const plan = req.plan;
+
+    if (plan !== "premium") {
+      return res.json({
+        success: false,
+        massege:
+          "This Resume Review Feature only available for Premium Subscriptions",
+      });
+    }
+
+    if (resume.size > 5 * 1024 * 1024) {
+      return res.json({
+        success: false,
+        message: "Resume Pdf file size exceeds allowed sized (5 MB).",
+      });
+    }
+
+    const dataBuffer = fs.readFileSync(resume.path);
+    const pdfData = await pdf(dataBuffer);
+
+    const response = await openai.chat.completions.create({
+      model: "gemini-2.0-flash",
+      messages: [
+        {
+          role: "user",
+          content: `You are an expert **Resume Reviewer and Career Coach**. Critically analyze the following resume and provide a complete, detailed, long-form critique. The output must begin with an engaging summary of the resume's core strengths, followed by a **comprehensive section-by-section analysis** with actionable suggestions for improvement. Use multiple descriptive headings (using '##') for each major section (e.g., 'Summary/Objective', 'Experience', 'Skills', 'Formatting'), and conclude with a prioritized action plan. **Resume Content:** ${pdfData.text}`,
+        },
+      ],
+      temperature: 0.7,
+      max_tokens: 1000,
+    });
+
+    const content = response.choices[0].message.content;
+
+    await sql` INSERT INTO creations (user_id, prompt, content, type) VALUES (${userId}, ${`Review the Uploaded Resume`}, ${content}, ${"resume-review"})`;
+
+    res.json({ success: true, content });
   } catch (error) {
     console.log("error", error.massege);
     res.json({ success: false, message: error.message });
