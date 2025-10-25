@@ -17,6 +17,7 @@ const ImageSkeleton = () => (
 
 const Community = () => {
   const [creations, setCreations] = useState([]);
+
   const { user } = useUser();
   const [loading, setLoading] = useState(false);
   const { getToken } = useAuth();
@@ -41,8 +42,6 @@ const Community = () => {
       setLoading(false);
     }
   };
-
-  // ... inside Community component ...
 
   const imageLikeToggle = async (id) => {
     try {
