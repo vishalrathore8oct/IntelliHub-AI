@@ -3,6 +3,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useAuth } from "@clerk/clerk-react";
 import toast from "react-hot-toast";
+import Markdown from "react-markdown";
 
 axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 
@@ -73,7 +74,7 @@ const ReviewResume = () => {
           Review Resume
         </button>
       </form>
-      <div className="w-full max-w-lg p-4 bg-white rounded-lg flex flex-col border border-gray-200 min-h-88">
+      <div className="w-full max-w-lg p-4 bg-white rounded-lg flex flex-col border border-gray-200 min-h-88 max-h-[80vh]">
         <div className="flex items-center gap-3">
           <FileText className="w-5 h-5 text-[#00DA83]" />
 
