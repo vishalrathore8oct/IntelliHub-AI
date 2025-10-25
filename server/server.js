@@ -4,6 +4,7 @@ import "dotenv/config"
 import { clerkMiddleware, requireAuth } from '@clerk/express'
 import aiRouter from "./routes/ai.routes.js"
 import connectCloudinary from "./configs/cloudinary.js"
+import userRouter from "./routes/user.routes.js"
 
 
 await connectCloudinary()
@@ -22,6 +23,7 @@ app.get("/", (req, res) => {
 app.use(requireAuth())
 
 app.use("/api/ai", aiRouter)
+app.use("/api/user", userRouter)
 
 
 const PORT = process.env.PORT || 8080
