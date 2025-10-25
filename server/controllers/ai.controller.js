@@ -79,7 +79,7 @@ export const generateBlogTitle = async (req, res) => {
         },
       ],
       temperature: 0.7,
-      max_tokens: 180,
+      max_tokens: 250,
     });
 
     const content = response.choices[0].message.content;
