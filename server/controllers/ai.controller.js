@@ -22,7 +22,7 @@ export const generateArticle = async (req, res) => {
     if (plan !== "premium" && free_usage >= 10) {
       return res.json({
         success: false,
-        massege: "Free Usage Limit Reached, Upgrade to Premium to continue",
+        message: "Free Usage Limit Reached, Upgrade to Premium to continue",
       });
     }
 
@@ -52,7 +52,7 @@ export const generateArticle = async (req, res) => {
 
     res.json({ success: true, content });
   } catch (error) {
-    console.log("error", error.massege);
+    console.log("error", error.message);
     res.json({ success: false, message: error.message });
   }
 };
@@ -67,7 +67,7 @@ export const generateBlogTitle = async (req, res) => {
     if (plan !== "premium" && free_usage >= 10) {
       return res.json({
         success: false,
-        massege: "Free Usage Limit Reached, Upgrade to Premium to continue",
+        message: "Free Usage Limit Reached, Upgrade to Premium to continue",
       });
     }
 
@@ -97,7 +97,7 @@ export const generateBlogTitle = async (req, res) => {
 
     res.json({ success: true, content });
   } catch (error) {
-    console.log("error", error.massege);
+    console.log("error", error.message);
     res.json({ success: false, message: error.message });
   }
 };
@@ -111,7 +111,7 @@ export const generateImage = async (req, res) => {
     if (plan !== "premium") {
       return res.json({
         success: false,
-        massege:
+        message:
           "This Image Generation Feature only available for Premium Subscriptions",
       });
     }
@@ -141,7 +141,7 @@ export const generateImage = async (req, res) => {
 
     res.json({ success: true, content: secure_url });
   } catch (error) {
-    console.log("error", error.massege);
+    console.log("error", error.message);
     res.json({ success: false, message: error.message });
   }
 };
@@ -155,7 +155,7 @@ export const removeImageBackground = async (req, res) => {
     if (plan !== "premium") {
       return res.json({
         success: false,
-        massege:
+        message:
           "This Background Remover Feature only available for Premium Subscriptions",
       });
     }
@@ -173,7 +173,7 @@ export const removeImageBackground = async (req, res) => {
 
     res.json({ success: true, content: secure_url });
   } catch (error) {
-    console.log("error", error.massege);
+    console.log("error", error.message);
     res.json({ success: false, message: error.message });
   }
 };
@@ -188,7 +188,7 @@ export const removeImageObject = async (req, res) => {
     if (plan !== "premium") {
       return res.json({
         success: false,
-        massege:
+        message:
           "This Object Remover Feature only available for Premium Subscriptions",
       });
     }
@@ -204,7 +204,7 @@ export const removeImageObject = async (req, res) => {
 
     res.json({ success: true, content: imageUrl });
   } catch (error) {
-    console.log("error", error.massege);
+    console.log("error", error.message);
     res.json({ success: false, message: error.message });
   }
 };
@@ -218,7 +218,7 @@ export const resumeReview = async (req, res) => {
     if (plan !== "premium") {
       return res.json({
         success: false,
-        massege:
+        message:
           "This Resume Review Feature only available for Premium Subscriptions",
       });
     }
@@ -257,7 +257,7 @@ export const resumeReview = async (req, res) => {
     res.json({ success: true, content });
     
   } catch (error) {
-    console.log("error", error.massege);
+    console.log("error", error.message);
     res.json({ success: false, message: error.message });
   }
 };

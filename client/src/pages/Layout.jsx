@@ -14,7 +14,7 @@ const Layout = () => {
     <div className="flex flex-col justify-start items-start h-screen">
       <nav className="w-full px-8 min-h-14 flex items-center justify-between border-b border-gray-200">
         <img
-          className="cursor-pointer w-32 sm:w-44"
+          className="w-55 sm:w-65 cursor-pointer"
           src={assets.logo}
           alt="Logo"
           onClick={() => navigate("/")}
