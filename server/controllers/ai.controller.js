@@ -3,9 +3,7 @@ import sql from "../configs/db.js";
 import { clerkClient } from "@clerk/express";
 import axios from "axios";
 import { v2 as cloudinary } from "cloudinary";
-import fs from "fs";
-import { PDFParse } from 'pdf-parse';
-
+import { PDFExtract } from 'pdf.js-extract';
 
 const openai = new OpenAI({
   apiKey: process.env.GEMINI_API_KEY,
@@ -230,13 +228,27 @@ export const resumeReview = async (req, res) => {
       });
     }
 
-    const dataBuffer = fs.readFileSync(resume.path);
+    const pdfExtract = new PDFExtract();
+    const options = {}; 
 
-    const parser = new PDFParse({ data: dataBuffer });
-    const result = await parser.getText();
-    const pdfData = result.text;
+    const pdfData = await new Promise((resolve, reject) => {
+      pdfExtract.extract(resume.path, options, (err, data) => {
+        if (err) return reject(err);
+
+        let fullText = "";
+        data.pages.forEach((page) => {
+          page.content.forEach((item) => {
+            fullText += item.str + " ";
+          });
+          fullText += "\n\n"; // spacing between pages
+        });
+
+        resolve(fullText.trim());
+      });
+    });
 
     const prompt = `Review the following resume and provide constructive feedback on its strengths, weaknesses, and areas for improvement. Resume Content:\n\n${pdfData}`;
+    
 
     const response = await openai.chat.completions.create({
       model: "gemini-2.0-flash",
@@ -255,7 +267,6 @@ export const resumeReview = async (req, res) => {
     await sql` INSERT INTO creations (user_id, prompt, content, type) VALUES (${userId}, ${`Review the Uploaded Resume`}, ${content}, ${"resume-review"})`;
 
     res.json({ success: true, content });
-    
   } catch (error) {
     console.log("error", error.message);
     res.json({ success: false, message: error.message });

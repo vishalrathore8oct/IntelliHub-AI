@@ -12,7 +12,6 @@
   "description": "",
   "dependencies": {
     "@clerk/express": "^1.7.42",
-    "@napi-rs/canvas": "^0.1.81",
     "@neondatabase/serverless": "^1.0.2",
     "axios": "^1.12.2",
     "cloudinary": "^2.8.0",
@@ -21,7 +20,7 @@
     "express": "^5.1.0",
     "multer": "^2.0.2",
     "openai": "^6.7.0",
-    "pdf-parse": "^2.4.5"
+    "pdf.js-extract": "^0.2.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.10"
